@@ -1,0 +1,19 @@
+---
+title: "Brandon C. Rojas"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+<img src="images/inti_test.png" style="width:25%">
+
+# This is Brandon's awesome website..?
+
+![](https://c.tenor.com/fsMhE8zrx4wAAAAC/solaire-darksouls.gif)
+<br>
+<br>
+[about](about.html)
+[instacart](instacart.html)
+[ny_noaa](ny_noaa.html)
+[nyc_inspect](nyc_inspect.html)

@@ -1,0 +1,20 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: about.html
+    - text: "instacart"
+      href: instacart.html
+    - text: "NY NOAA"
+      href: ny_noaa.html
+    - text: "NYC Restaurant Inspections"
+      href: nyc_inspect.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<br2598@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: http://github.com/brojasnyc/
+output:
+  html_document:
+    theme: cerulean
