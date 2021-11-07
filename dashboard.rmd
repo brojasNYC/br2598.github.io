@@ -20,7 +20,7 @@ Column {data-width=350}
 
 
 ```{r}
-data("rest_inspec")
+data("rest_inspec") #test
 rest_inspec =
   rest_inspec %>%
   filter(grade %in% c("A", "B", "C"), boro != "Missing", inspection_date >= as.Date("2017-01-01")) %>% 
