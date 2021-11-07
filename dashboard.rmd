@@ -7,18 +7,13 @@ output:
     source_code: embed
 ---
 
-```{r}
+```{r setup, include=FALSE}
 library(flexdashboard)
 library(tidyverse)
 library(plotly)
 library(p8105.datasets)
 library(lubridate)
 ```
-
-Column {data-width=350}
------------------------------------------------------------------------
-
-
 ```{r}
 data("rest_inspec") #test
 rest_inspec =
@@ -26,20 +21,18 @@ rest_inspec =
   filter(grade %in% c("A", "B", "C"), boro != "Missing", inspection_date >= as.Date("2017-01-01")) %>% 
   mutate(boro = str_to_title(boro),
          dba = str_to_title(dba)) 
-view(rest_inspec)
 ```
 
+
+Column {data-width=350}
+-----------------------------------------------------------------------
 ### Chart A
 
 ```{r}
 
-#Which Pizzarias (see points) have FRSA related bugs, and what grades are they getting?
-
 box_ggplot = 
  rest_inspec %>% 
    filter(str_detect(violation_description, "FRSA")) %>% 
-  #  distinct(camis, .keep_all = TRUE) %>% 
-  # #Businesses can be visited more than once in a year. Should only count once, otherwise you can have more "Fly sightings" than restaurants, if many have more than one occurence..
    mutate(boro = fct_infreq(boro)) %>%
    ggplot(aes(x = boro, fill = grade)) + 
     labs(
@@ -51,7 +44,8 @@ box_ggplot =
 ggplotly(box_ggplot)
 
 ```
-
+Column {data-width=350}
+-----------------------------------------------------------------------
 ### Chart B
 
 
@@ -64,19 +58,9 @@ rest_inspec %>%
 
 #Average grade is an A, and businesses are retested until they approach an A, thus all boroughs have similar statistics.
 ```
-
+Column {data-width=350}
+-----------------------------------------------------------------------
 ### Chart C
-
-```{r}
-# rest_inspec %>% 
-#   #filter(str_detect(violation_description, "Evidence of")) %>%
-#   filter(score >= 0) %>%
-#   mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>% 
-#   plot_ly(
-#     x = ~cuisine_description, y = ~score, type = "scatter", mode = "markers",
-#     color = ~score, text = ~text_label, alpha = 0.5) %>% layout(title = 'Health Score by Type of cuisine')
-
-```
 
 ```{r}
 p <- rest_inspec %>% 
@@ -97,7 +81,9 @@ ggplotly(p)
 
 ```
 
-
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Chart D
 
 
 ```{r}
@@ -107,20 +93,10 @@ rest_inspec %>%   mutate(text_label = str_c("Health Score: ", score, "\nGrade: "
    mutate(boro = fct_infreq(boro)) %>%
     plot_ly(
     x = ~cuisine_description, y = ~score, type = "scatter", mode = "markers",
-    color = ~grade, text = ~text_label, alpha = 0.5)
+    color = ~grade, text = ~text_label, alpha = 0.5) %>% layout(title = 'What subtype of pizzaria has the highest scores?')
 
 ```
 
-
-```{r}
-# rest_inspec %>%   mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>% 
-#   filter(str_detect(dba, "[Pp][Ii][Zz][Zz][Aa]")) %>%
-#    #mutate(boro = fct_infreq(boro)) %>%
-#     plot_ly(
-#     x = ~cuisine_description, y = ~score, type = "box", mode = "markers",
-#     color = ~grade, text = ~text_label, alpha = 0.5)
-
-```
 
 
 
