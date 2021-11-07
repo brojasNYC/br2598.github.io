@@ -65,7 +65,7 @@ Column {data-width=350}
 ```{r}
 p <- rest_inspec %>% 
   # count(boro) %>% 
-  # mutate(boro = fct_reorder(boro, n)) %>% 
+  # mutate(boro = fct_reorder(boro, n)) %>% #
   #mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>%
   ggplot(aes(x=inspection_date, y=score, color = grade)) +
   geom_line() + 
