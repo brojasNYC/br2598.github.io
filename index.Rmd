@@ -6,14 +6,9 @@ output:
     toc_float: true
     theme: cerulean
 ---
-<img src="images/inti_test.png" style="width:25%">
 
-# This is Brandon's awesome website..?
+Hello, I am an M.S. student at the Biostatistics department at Columbia University's Mailman School of Public Health.
 
-![](https://c.tenor.com/fsMhE8zrx4wAAAAC/solaire-darksouls.gif)
-<br>
-<br>
-[about](about.html)
-[instacart](instacart.html)
-[ny_noaa](ny_noaa.html)
-[nyc_inspect](nyc_inspect.html)
+I am also work for Columbia Mailman as the Development Coordinator at the Office of Development and Alumni Relations, assisting with scholarship, student support, and research fundraising.
+
+I'm interested in Brain Computer Interfaces (BCI). I'd like to help bridge the gap between Neuroscience, psychology, and Public Health. 
