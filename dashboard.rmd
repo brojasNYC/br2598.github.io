@@ -1,0 +1,128 @@
+---
+title: "2017 NYC Health Inspections"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+library(lubridate)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+
+```{r}
+data("rest_inspec")
+rest_inspec =
+  rest_inspec %>%
+  filter(grade %in% c("A", "B", "C"), boro != "Missing", inspection_date >= as.Date("2017-01-01")) %>% 
+  mutate(boro = str_to_title(boro),
+         dba = str_to_title(dba)) 
+view(rest_inspec)
+```
+
+### Chart A
+
+```{r}
+
+#Which Pizzarias (see points) have FRSA related bugs, and what grades are they getting?
+
+box_ggplot = 
+ rest_inspec %>% 
+   filter(str_detect(violation_description, "FRSA")) %>% 
+  #  distinct(camis, .keep_all = TRUE) %>% 
+  # #Businesses can be visited more than once in a year. Should only count once, otherwise you can have more "Fly sightings" than restaurants, if many have more than one occurence..
+   mutate(boro = fct_infreq(boro)) %>%
+   ggplot(aes(x = boro, fill = grade)) + 
+    labs(
+    title = "Do flies care about letter grade? Filth fly sightings by Borough",
+    y = "Number of sightings",
+    x = "Borough") +
+   geom_bar() 
+
+ggplotly(box_ggplot)
+
+```
+
+### Chart B
+
+
+```{r}
+rest_inspec %>% 
+  filter(score >= 0) %>%
+  mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>% 
+  plot_ly(
+    y = ~score, color = ~boro, type = "box", text = ~text_label, alpha = 0.5) %>% layout(title = 'Health Score by borough (lower is better)')
+
+#Average grade is an A, and businesses are retested until they approach an A, thus all boroughs have similar statistics.
+```
+
+### Chart C
+
+```{r}
+# rest_inspec %>% 
+#   #filter(str_detect(violation_description, "Evidence of")) %>%
+#   filter(score >= 0) %>%
+#   mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>% 
+#   plot_ly(
+#     x = ~cuisine_description, y = ~score, type = "scatter", mode = "markers",
+#     color = ~score, text = ~text_label, alpha = 0.5) %>% layout(title = 'Health Score by Type of cuisine')
+
+```
+
+```{r}
+p <- rest_inspec %>% 
+  # count(boro) %>% 
+  # mutate(boro = fct_reorder(boro, n)) %>% 
+  #mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>%
+  ggplot(aes(x=inspection_date, y=score, color = grade)) +
+  geom_line() + 
+  xlab("") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+    labs(
+    title = "Scores over time",
+    y = "Score",
+    x = "Month")
+
+ggplotly(p)
+
+
+```
+
+
+
+
+```{r}
+rest_inspec %>%   mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>%
+  filter(str_detect(violation_description, "Evidence of")) %>%
+  filter(str_detect(dba, "[Pp][Ii][Zz][Zz][Aa]")) %>%
+   mutate(boro = fct_infreq(boro)) %>%
+    plot_ly(
+    x = ~cuisine_description, y = ~score, type = "scatter", mode = "markers",
+    color = ~grade, text = ~text_label, alpha = 0.5)
+
+```
+
+
+```{r}
+# rest_inspec %>%   mutate(text_label = str_c("Health Score: ", score, "\nGrade: ", grade, "\nBusiness:", dba)) %>% 
+#   filter(str_detect(dba, "[Pp][Ii][Zz][Zz][Aa]")) %>%
+#    #mutate(boro = fct_infreq(boro)) %>%
+#     plot_ly(
+#     x = ~cuisine_description, y = ~score, type = "box", mode = "markers",
+#     color = ~grade, text = ~text_label, alpha = 0.5)
+
+```
+
+
+
+
+
